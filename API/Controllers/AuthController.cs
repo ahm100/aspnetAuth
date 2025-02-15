@@ -26,22 +26,17 @@ namespace API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            //var result = await _userService.RegisterUserAsync(model);
-            //if (result.Succeeded)
+            // we handle with exception middleware no try cach here
+            //try
             //{
-            //    return Ok(result);
-            //}
-            //return BadRequest(result.Errors);
-            try
-            {
                 var user = await _userService.RegisterUserAsync(model);
                 var token = _tokenService.GenerateToken(model.Role,user);
                 return Ok(new { Token = token });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
         }
 
         [AllowAnonymous]
