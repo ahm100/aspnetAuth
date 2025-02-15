@@ -35,7 +35,7 @@ namespace API.Controllers
             try
             {
                 var user = await _userService.RegisterUserAsync(model);
-                var token = _tokenService.GenerateToken("Superadmin",user);
+                var token = _tokenService.GenerateToken(model.Role,user);
                 return Ok(new { Token = token });
             }
             catch (Exception ex)
@@ -80,7 +80,7 @@ namespace API.Controllers
             try
             {
                 var user = await _userService.LoginUserAsync(model);
-                var token = _tokenService.GenerateToken("Superadmin",user);
+                var token = _tokenService.GenerateToken(user.Role,user);
                 return Ok(new { Token = token });
             }
             catch (Exception ex)

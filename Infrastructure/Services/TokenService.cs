@@ -21,10 +21,10 @@ namespace Infrastructure.Services
             _configuration = configuration;
         }
 
-        public string GenerateToken(string userRole, User user)
+        public string GenerateToken(UserRoleEnum userRole, User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = userRole == UserRoleEnum.Superadmin.ToString()
+            var key = userRole == UserRoleEnum.Superadmin
             ? Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:superadmin_secretKey").Get<string>())
             : Encoding.UTF8.GetBytes(_configuration.GetSection("Jwt:secretKey").Get<string>());
             var tokenDescriptor = new SecurityTokenDescriptor
