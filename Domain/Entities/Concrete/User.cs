@@ -16,7 +16,7 @@ namespace Domain.Entities.Concrete
         public string? LastName { get; set; }
         public string? CellPhone { get; set; }
         public UserRoleEnum Role { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public string? SignitureImgPath { get; set; }
         public string? AvatarImgPath { get; set; }
         public DateTime? BlockedAt { get; set; }

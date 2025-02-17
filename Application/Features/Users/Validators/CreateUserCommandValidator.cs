@@ -10,7 +10,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         RuleFor(x => x.Firstname).NotEmpty().WithMessage("First name is required.");
         RuleFor(x => x.Lastname).NotEmpty().WithMessage("Last name is required.");
-        RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required.").EmailAddress().WithMessage("Invalid email format.");
+        //RuleFor(x => x.Email).NotEmpty().WithMessage("Email is required.").EmailAddress().WithMessage("Invalid email format.");
         //RuleFor(x => x.DateOfBirth).NotEmpty().WithMessage("Date of birth is required.");
         // Add other validation rules as needed
     }
