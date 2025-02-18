@@ -14,7 +14,7 @@ using Infrastructure.CustomAttributes;
 namespace API.Controllers
 {
     [Authorize(Policy = "SuperUsersPolicy")]
-    [Permission("userDelete")]
+   // [Permission("userDelete")]
     [Route("api/[controller]")]
     [ApiController]
     public class JobSeekersController : ControllerBase

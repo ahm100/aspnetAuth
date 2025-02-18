@@ -90,6 +90,7 @@ app.UseRouting();
 app.UseMiddleware<TokenMiddleware>(); // Use custom middleware to append Bearer prefix
 
 app.UseMiddleware<ExceptionHandlingMiddleware>(); // Register the middleware
+app.UseMiddleware<ClaimCheckMiddleware>();
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -56,6 +56,11 @@ namespace Infrastructure
 
         public static void MultipleAuthenticationAndAuthorzation(IServiceCollection services, IConfiguration configuration)
         {
+            var validIssuer = configuration["Jwt:Issuer"];
+            var validAudience = configuration["Jwt:Audience"];
+            var simpleUserKey = Encoding.UTF8.GetBytes(configuration["Jwt:secretKey"]);
+            var superAdminKey = Encoding.UTF8.GetBytes(configuration["Jwt:superadmin_secretKey"]);
+
             services.AddAuthentication()
             .AddJwtBearer("SimpleUsersBearer", options =>
             {
@@ -65,11 +70,9 @@ namespace Infrastructure
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:secretKey"])),
-
-
+                    ValidIssuer = validIssuer,
+                    ValidAudience = validAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(simpleUserKey),
                 };
             })
             .AddJwtBearer("SuperUsersBearer", options =>
@@ -80,34 +83,20 @@ namespace Infrastructure
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
-                    ValidAudience = configuration["Jwt:Issuer"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:superadmin_secretKey"])),
-
-
+                    ValidIssuer = validIssuer,
+                    ValidAudience = validAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(superAdminKey),
                 };
-
             });
-
-
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("SimpleUsersPolicy", policy =>
-                        {
-                            policy.RequireAuthenticatedUser();
-                            policy.AuthenticationSchemes.Add("SimpleUsersBearer");
-                           
-                        });
-            options.AddPolicy("SuperUsersPolicy", policy =>
-                    policy.RequireAuthenticatedUser().AddAuthenticationSchemes("SuperUsersBearer"));
-                options.AddPolicy("CombinedPolicy", policy =>
-                    policy.RequireAuthenticatedUser().AddAuthenticationSchemes("SimpleUsersBearer", "SuperUsersBearer"));
+                options.AddPolicy("SuperUsersPolicy", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                    policy.AuthenticationSchemes.Add("SuperUsersBearer");
+                });
             });
-
-
-
-
         }
 
 
